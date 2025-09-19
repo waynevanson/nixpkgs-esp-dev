@@ -1,27 +1,8 @@
-# Rust Fork
+# `nixpkgs-esp-rs`
 
-## `@waynevanson`
+## Additions
 
-There's a lot of forking going on here that needs to be explained.
-It's up to date as of `2025-09-07`.
-
-| Repo                                   | Branch              | Explanation                                                                                                                 |
-| :------------------------------------- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------- |
-| `waynevanson/nixpkgs-esp-dev-rust`     | `main`              | Attempts to update inputs related [ESP `rust-build`](https://github.com/esp-rs/rust-build) from `1.86.0.0` to `1.88.0.0`.   |
-| `aljazerzen/nixpkgs-esp-dev-rust`      | `esp32`             | Add ESP32 nix shell, update from `1.80.0.0` to `1.86.0.0`.                                                                  |
-| `hsel-netsys/nixpkgs-esp-dev-rust`     | `update_and_esp32s` | No changes in 1 year. Merge stuff from upstream mirrexagon fork with `esp-idf` updates.                                     |
-| `thiskappaisgrey/nixpkgs-esp-dev-rust` | `rust`              | No changed in 2 years. The base for implemented rust support `esp-rs`, `esp-idf` as nix packages and nix shells in a flake. |
-| `mirrexagon/nixpkgs-esp-dev`           | `<default>`         | Up to date implementation of `esp-idf` in a nix module. Supports most of the esp32 series.                                  |
-
-What's odd is that instead of importing from the `mirrexagon` repository, all these forks were made.
-
-I think what should've happened is that `esp-rs` organisation should implement nix modules.
-That way they're always up to date.
-
-Looks like there's discussion about it [here on esp-rs/rust-build](https://github.com/esp-rs/rust-build/issues/289).
-
-## Someone else
-
+- Upgrade to the latest available version (v1.88.0.0 at the time).
 - Add support for using the [esp-rs fork](https://github.com/esp-rs/rust-build) of Rust to support the Xtensa Architecture processors for esp32 (ESP32-S2 and ESP32-S3).
 - Checkout the `esp32s2-idf-rust` devShell (meant as a nix replacement to [espup](https://github.com/esp-rs/espup) ). The reason why I removed `esp-idf` from that shell is that the [esp-idf-sys](https://github.com/esp-rs/esp-idf-sys) crate automatically clones `esp-idf` and expects it to be a git repository. It also installs the python dependencies automatically through `virtualenv`. I'd imagine supporting `esp32s3` would be similar, but I haven't tested it myself.
 

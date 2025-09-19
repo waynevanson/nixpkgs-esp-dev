@@ -1,5 +1,5 @@
 {
-  description = "ESP8266/ESP32 development tools";
+  description = "Rust toolchains";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -23,8 +23,10 @@
           libllvm = pkgs.callPackage ./pkgs/libllvm.nix {};
           rust = import ./pkgs/rust {inherit (pkgs) rust callPackage lib stdenv fetchurl;};
         };
-        checks.default = pkgs.mkShell {
-          buildInputs = builtins.attrValues self.packages.${system};
+        checks = {
+          default = pkgs.mkShell {
+            buildInputs = builtins.attrValues self.packages.${system};
+          };
         };
       }
     );
