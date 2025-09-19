@@ -5,6 +5,8 @@
   lib,
   stdenv,
   fetchurl,
+  rustcHash ? "sha256-dFNJFHSl9yiyRIFlHUPLzq+S9438q+fLiCxr8h/uBQU=",
+  rustSrcHash ? "sha256-m35u//UHO7uFtQ5mn/mVhNuJ1PCsuljgkD3Rmv3uuaE=",
 }: let
   # Remove keys from attrsets whose value is null.
   removeNulls = set:
@@ -29,18 +31,18 @@
     srcs = {
       rustc = fetchurl {
         url = "https://github.com/esp-rs/rust-build/releases/download/v${version}/rust-${version}-x86_64-unknown-linux-gnu.tar.xz";
-        hash = "sha256-dFNJFHSl9yiyRIFlHUPLzq+S9438q+fLiCxr8h/uBQU=";
+        hash = rustcHash;
       };
       rust-src = fetchurl {
         url = "https://github.com/esp-rs/rust-build/releases/download/v${version}/rust-src-${version}.tar.xz";
-        hash = "sha256-m35u//UHO7uFtQ5mn/mVhNuJ1PCsuljgkD3Rmv3uuaE=";
+        hash = rustSrcHash;
       };
     };
   };
 in
   assert stdenv.system == "x86_64-linux";
     mkAggregated {
-      pname = "rust-xtensa";
+      pname = "rust";
       date = "2024-07-02";
       inherit version;
       availableComponents = selComponents;
