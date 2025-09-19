@@ -46,5 +46,5 @@ in
       date = "2024-07-02";
       inherit version;
       availableComponents = selComponents;
-      selectedComponents = [selComponents.rustc selComponents.rust-src];
+      selectedComponents = builtins.attrValues selComponents;
     }
