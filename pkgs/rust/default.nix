@@ -1,33 +1,30 @@
-{ version ? "1.88.0.0"
-, callPackage
-, rust
-, lib
-, stdenv
-, fetchurl
-}:
-let
-  component = import { };
+{
+  version ? "1.88.0.0",
+  callPackage,
+  rust,
+  lib,
+  stdenv,
+  fetchurl,
+}: let
   # Remove keys from attrsets whose value is null.
   removeNulls = set:
     removeAttrs set
-      (lib.filter (name: set.${name} == null)
-        (lib.attrNames set));
+    (lib.filter (name: set.${name} == null)
+      (lib.attrNames set));
   # FIXME: https://github.com/NixOS/nixpkgs/pull/146274
   toRustTarget = platform:
-    if platform.isWasi then
-      "${platform.parsed.cpu.name}-wasi"
-    else
-      rust.toRustTarget platform;
-  mkComponentSet = callPackage ./rust/mk-component-set.nix {
+    if platform.isWasi
+    then "${platform.parsed.cpu.name}-wasi"
+    else rust.toRustTarget platform;
+  mkComponentSet = callPackage ./mk-component-set.nix {
     inherit toRustTarget removeNulls;
-    # src = 
-
+    # src =
   };
-  mkAggregated = callPackage ./rust/mk-aggregated.nix { };
+  mkAggregated = callPackage ./mk-aggregated.nix {};
 
   selComponents = mkComponentSet {
     inherit version;
-    renames = { };
+    renames = {};
     platform = "x86_64-linux";
     srcs = {
       rustc = fetchurl {
@@ -40,14 +37,12 @@ let
       };
     };
   };
-
 in
-assert stdenv.system == "x86_64-linux";
-mkAggregated {
-  pname = "rust-xtensa";
-  date = "2024-06-06";
-  inherit version;
-  availableComponents = selComponents;
-  selectedComponents = [ selComponents.rustc selComponents.rust-src ];
-}
-
+  assert stdenv.system == "x86_64-linux";
+    mkAggregated {
+      pname = "rust-xtensa";
+      date = "2024-07-02";
+      inherit version;
+      availableComponents = selComponents;
+      selectedComponents = [selComponents.rustc selComponents.rust-src];
+    }
